@@ -56,7 +56,7 @@ function intial(){
                 viewRole();
             }
             else if (answer.name == "Exit"){
-                end.connection()
+                connection.end();
             }
         });
         
