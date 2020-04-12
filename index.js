@@ -34,31 +34,29 @@ function intial(){
             ]
         }).then(function(answer){
             //calls the function depending on choice
-            switch(answer.choices){
-                case "View Employees":
-                    viewEmployee();
-                    break;
-                case "View Department":
-                     viewDepartment();
-                     break;
-                case "View Roles":
-                    viewRoles();
-                    break;
-                case "Add Employee":
-                    addEmployee();
-                    break;
-                case "Add Role":
-                    addRole();
-                    break;
-                case "Add Department":
-                    addDepartment();
-                    break;
-                case "Update Employee Role":
-                    updateRole();
-                    break;
-                case "Exit":
-                    connection.end()
-                    break;
+            if (answer.name == "Add Department") {
+                addDepartment();
+            }
+            else if (answer.name == "Add Employee") {
+                addEmployee();
+            }
+            else if (answer.name == "Add Role") {
+                addRole();
+            }
+            else if (answer.name == "Update Employee role") {
+                updateEmployee();
+            }
+            else if (answer.name == "View departments") {
+                viewDepartment();
+            }
+            else if (answer.name == "View employees") {
+                viewEmployee();
+            }
+            else if (answer.name == "View roles") {
+                viewRole();
+            }
+            else if (answer.name == "Exit"){
+                end.connection()
             }
         });
         
