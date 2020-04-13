@@ -61,3 +61,28 @@ function intial(){
         });
         
 };
+
+function addDepartment(){
+    //calls inquirer
+    inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What department would you like to add?",
+        name: "department"
+      }
+    ]).then(answer => {
+      //places the answer into the database
+        connection.query(
+          "INSERT INTO department SET ?",
+          {
+            name: answer.department
+          },
+          function(err) {
+            if (err) throw err;
+          })
+        console.log(`\n ${answer.department} added\n`);
+          //calls the intial function to restart the questioning
+          intial();
+     }); 
+}
