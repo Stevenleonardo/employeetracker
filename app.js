@@ -1,5 +1,5 @@
 //requires the modules
-const sql = require("mysql");
+const mysql = require("mysql");
 const inquirer = require("inquirer");
 
 //sets up the connection to the database into a variable
@@ -86,3 +86,111 @@ function addDepartment(){
           intial();
      }); 
 }
+const addEmployee = () => {
+    // selects the data from the table
+    connection.query("SELECT * FROM role", (err,res) => {
+      if(err) throw err;
+      })
+      
+    // asks the user the proper questions  
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "Employee's first name?",
+          name: "first"
+        },
+        {
+          type: "input",
+          message: "Employee's last name?",
+          name: "last"
+        },
+        {
+          type: "list",
+          message: "Employee's role?",
+          name: "role",
+          choices: newRole
+        }
+      ]).then(answer => {
+        let roles;
+        // Loop through the response from selecting all from role table
+          for (let i = 0; i < res.length; i++) {
+            // conditional
+              if (res[i].title == answer.role) {
+                  roles = res[i].roles;
+              }
+          }
+      
+        // inserts answer into the database
+        connection.query(
+          "INSERT INTO employee SET ?",
+          {
+            first_name: answer.first,
+            last_name: answer.last,
+            role_id: roles
+          },
+          function(err) {
+            if (err) throw err;
+            console.log(`\n New employee ${answer.first} ${answer.last} has been added\n`);
+            // 
+            start();
+          }
+        );
+      })
+    
+}
+   function addRole(){
+    connection.query("SELECT * FROM department", (err,res) => {
+        if(err) throw err;
+        // Use map method to create a array for the names 
+        const departments = res.map((name1) => {
+          return `${name1.name}`
+        })
+        
+      // use inquirer to prompt user to some questions to collect info 
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            message: "What new role would you like to add?",
+            name: "role"
+          },
+          {
+            type: "input",
+            message: "hourly rate for the new role?",
+            name: "rate"
+          },
+          {
+            type: "list",
+            message: "What department does this new role belong to?",
+            name: "department",
+            choices: departmentName
+          }
+        ]).then(answer => {
+          let departmentTitle;
+            for (let i = 0; i < res.length; i++) {
+              
+                if (res[i].name == answer.department) {
+                    departmentTitle = res[i].department_id;
+                }
+            }
+        
+          // when finished prompting, insert a new item into the db with that info
+          connection.query(
+            "INSERT INTO role SET ?",
+            {
+              title: answer.role,
+              salary: answer.salary,
+              department_id: departmentId
+            },
+            function(err) {
+              if (err) throw err;
+              console.log(`\n New role ${answer.role} has been added\n`);
+              // re-prompt the user for what to do next
+              start();
+            }
+          );
+        })
+      })
+    }
+   
