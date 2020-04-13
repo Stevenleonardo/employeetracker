@@ -1,9 +1,11 @@
 //requires the modules
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+var table = require("console.table")
+const logo = require('asciiart-logo');
 
 //sets up the connection to the database into a variable
-var connection = mysql.createconnection({
+var connection = mysql.createConnection ({
     host: "localhost",
     // Your port; if not 3306
     PORT: 8080,
@@ -22,6 +24,19 @@ connection.connect(function (err) {
 });
 
 function intial() {
+    console.log(
+        logo({
+            name: 'Employee Manager',
+            lineChars: 10,
+            padding: 4,
+            margin: 4
+        })
+            .emptyLine()
+            .right('version 3.7.123')
+            .emptyLine()
+            .center("Organization in one app")
+            .render()
+    );
     //calls inquirer
     inquirer
         .prompt(
@@ -187,7 +202,7 @@ function addRole() {
                         if (err) throw err;
                         console.log(`\n New role ${answer.role} has been added\n`);
                         // re-prompt the user for what to do next
-                        start();
+                        intial();
                     }
                 );
             })
@@ -270,18 +285,11 @@ const updateEmployee = () => {
     })
   })
   }
-  function viewDepartments() {
+  function viewDepartment() {
     connection.query('SELECT id AS ID, name AS Department FROM `department`', function (err, res, ) {
       if (err) throw err;
       //will print the results in table form:
       printTable(res);
-      //Logs Below show a different table form
-      // console.log("Departments:")
-      // for (var i = 0; i< res.length; i++) {
-      //     console.log(res[i].name); 
-      // }
-      // console.log("---------------------------------------")
-      // console.log("---------------------------------------")
   
       start();
   
